@@ -1,5 +1,6 @@
 package com.cursorestapi.apirest.resources;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,29 @@ public class DisciplinaResource {
 	}
 	
 	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
-	public ResponseEntity<List<Disciplina>> rank() {
-		List<Disciplina> obj = disciplinaService.rank();
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<?> rank() {
+		List<Disciplina> list = disciplinaService.findAll();
+		Collections.sort(list);
+		return ResponseEntity.ok().body(list);
+	}
+		
+	@RequestMapping(value = "/{id}/nome", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateName(@PathVariable Integer id, @RequestBody Disciplina obj) {
+		Disciplina objOld = disciplinaService.findById(id);
+		objOld.setNome(obj.getNome());
+		return ResponseEntity.ok().body(objOld);
 	}
 	
+	@RequestMapping(value = "/{id}/nota", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateNota(@PathVariable Integer id, @RequestBody Disciplina obj) {
+		Disciplina objOld = disciplinaService.findById(id);
+		objOld.setNota(obj.getNota());
+		return ResponseEntity.ok().body(objOld);
+	}
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
 		Disciplina obj = disciplinaService.delete(id);
 		return ResponseEntity.ok().body(obj);
 	}
-
 }

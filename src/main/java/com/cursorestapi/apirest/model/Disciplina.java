@@ -1,11 +1,11 @@
 package com.cursorestapi.apirest.model;
 
-public class Disciplina {
+public class Disciplina implements Comparable<Disciplina> {
 
 	private int id;
 	private String nome;
 	private double nota;
-	
+		
 	public Disciplina () {
 	}
 
@@ -60,6 +60,15 @@ public class Disciplina {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Disciplina obj) {
+		if (obj.getNota() < this.nota) {
+			return -1;
+		} else {
+			return 1;
+		}
 	}
 
 }
