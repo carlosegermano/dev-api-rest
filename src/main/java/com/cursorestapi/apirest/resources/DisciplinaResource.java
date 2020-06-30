@@ -35,7 +35,6 @@ public class DisciplinaResource {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Disciplina obj = disciplinaService.findById(id);
-		if(obj == null) return ResponseEntity.notFound().build();
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -61,8 +60,8 @@ public class DisciplinaResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		Disciplina obj = disciplinaService.delete(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		disciplinaService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -1,38 +1,38 @@
 package com.cursorestapi.apirest.services;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cursorestapi.apirest.daos.DisciplinaRepository;
 import com.cursorestapi.apirest.model.Disciplina;
+import com.cursorestapi.apirest.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class DisciplinaService {
 	
-	private List<Disciplina> disciplinas = new ArrayList<>();
-	private int idAtual = 1;
-	
+	@Autowired
+	private DisciplinaRepository disciplinaRepository;
+		
 	public void insert(Disciplina obj) {
-		obj.setId(this.idAtual++);
-		disciplinas.add(obj);
+		disciplinaRepository.save(obj);
 	}
 
 	public List<Disciplina> findAll() {
-		return disciplinas;
+		return disciplinaRepository.findAll();
 	}
 	
 	public Disciplina findById(Integer id) {
-		for (Disciplina obj : disciplinas) {
-			if (obj.getId() == id) return obj;
-		}
-		return null;
+		Optional<Disciplina> obj = disciplinaRepository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Disciplina.class.getName()));
 	}
 	
-	public Disciplina delete(Integer id) {
-		Disciplina obj = findById(id);
-		int index = this.disciplinas.indexOf(obj);
-		return this.disciplinas.remove(index);
+	public void delete(Integer id) {
+		findById(id);
+		disciplinaRepository.deleteById(id);
 	}
 	
 }
