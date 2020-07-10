@@ -1,7 +1,5 @@
 package com.cursorestapi.apirest.services;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +66,16 @@ public class DisciplinaService {
 		disciplinaRepository.save(obj);
 		return new DisciplinaComentarioDTO(obj);
 	}
-
+	
+	public List<Disciplina> sortByNota(List<Disciplina> list) {
+		return disciplinaRepository.findByOrderByNotaDesc();
+	}
+	
+	public List<Disciplina> sortByLikes(List<Disciplina> list) {
+		return disciplinaRepository.findByOrderByLikesDesc();
+	}
+	
+	/*
 	public List<Disciplina> sortByNota(List<Disciplina> list) {
 		Comparator<Disciplina> comp = new Comparator<Disciplina>() {
 			public int compare(Disciplina d1, Disciplina d2) {
@@ -96,5 +103,5 @@ public class DisciplinaService {
 		Collections.sort(list, comp);
 		return list;
 	}
-
+	*/
 }
