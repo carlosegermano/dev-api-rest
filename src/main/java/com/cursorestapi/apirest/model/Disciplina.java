@@ -10,28 +10,32 @@ import javax.persistence.Id;
 @Entity
 public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private String nome;
 	private double nota;
-		
-	public Disciplina () {
+	private String comentarios = "";
+	private int likes = -1;
+
+	public Disciplina() {
 	}
 
-	public Disciplina(int id, String nome, double nota) {
+	public Disciplina(Long id, String nome, double nota, String comentarios, int likes) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.nota = nota;
+		this.comentarios = comentarios;
+		this.likes = likes;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -51,11 +55,31 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		this.nota = nota;
 	}
 
+	public String getComentarios() {
+		return comentarios;
+	}
+
+	public void addComentarios(String comentarios) {
+		if (this.comentarios.equals("")) {
+			this.comentarios = comentarios;
+		} else {
+			this.comentarios += "\n" + comentarios;
+		}
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void increaseLikes() {
+		this.likes = this.likes + 1;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.cursorestapi.apirest.model.Disciplina;
 
 @Repository
-public interface DisciplinaRepository extends JpaRepository<Disciplina, Integer> {
+public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
 }
