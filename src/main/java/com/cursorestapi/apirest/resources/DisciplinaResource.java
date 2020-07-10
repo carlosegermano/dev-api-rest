@@ -1,6 +1,5 @@
 package com.cursorestapi.apirest.resources;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,8 +51,16 @@ public class DisciplinaResource {
 	@RequestMapping(value = "/ranking/notas", method = RequestMethod.GET)
 	public ResponseEntity<?> rankByNotas() {
 		List<Disciplina> list = disciplinaService.findAll();
-		Collections.sort(list);
-		return ResponseEntity.ok().body(list);
+		List<Disciplina> sortedList = disciplinaService.sortByNota(list);
+		
+		return ResponseEntity.ok().body(sortedList);
+	}
+	
+	@RequestMapping(value = "/ranking/likes", method = RequestMethod.GET)
+	public ResponseEntity<?> rankByLikes() {
+		List<Disciplina> list = disciplinaService.findAll();
+		List<Disciplina> sortedList = disciplinaService.sortByLikes(list);
+		return ResponseEntity.ok().body(sortedList);
 	}
 		
 	@RequestMapping(value = "/{id}/nome", method = RequestMethod.PUT)
