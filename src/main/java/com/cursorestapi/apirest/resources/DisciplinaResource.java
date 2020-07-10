@@ -49,8 +49,8 @@ public class DisciplinaResource {
 			new ResponseEntity<Disciplina>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
-	public ResponseEntity<?> rank() {
+	@RequestMapping(value = "/ranking/notas", method = RequestMethod.GET)
+	public ResponseEntity<?> rankByNotas() {
 		List<Disciplina> list = disciplinaService.findAll();
 		Collections.sort(list);
 		return ResponseEntity.ok().body(list);
