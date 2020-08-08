@@ -13,6 +13,7 @@ public class UsuarioDTO implements Serializable {
 	private String email;
 	private String nome;
 	private String senha;
+	private Integer tipo;
 	
 	public UsuarioDTO() {
 	}
@@ -21,5 +22,6 @@ public class UsuarioDTO implements Serializable {
 		this.email = user.getEmail();
 		this.nome = user.getNome();
 		this.senha = user.getSenha();
+		this.tipo = user.getTipo();
 	}
 }

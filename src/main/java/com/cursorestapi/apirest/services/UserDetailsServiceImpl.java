@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Optional<Usuario> user = usuarioRepository.findByEmail(email);
 		if (user.isPresent()) {
-			return new UserSpringSecurity(user.get().getEmail(), user.get().getSenha());
+			return new UserSpringSecurity(user.get().getEmail(), user.get().getSenha(), user.get().getPerfis());
 		}
 		throw new UsernameNotFoundException(email);
 	}

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.cursorestapi.apirest.security.JWTAuthenticationFilter;
+import com.cursorestapi.apirest.security.JWTAuthorizationFilter;
 import com.cursorestapi.apirest.services.JWTService;
 
 @Configuration
@@ -38,11 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		"/h2/**"
 	};
 	
-	private static final String[] PUBLIC_MATCHERS_GET = {
-			"/v1/api/usuarios/**",
-			"/v1/api/disciplinas/**"
-		};
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
@@ -52,10 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtService));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtService, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	

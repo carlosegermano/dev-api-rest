@@ -34,6 +34,10 @@ public class UsuarioResource {
 	}
 
 	private Usuario fromDTO(UsuarioDTO userDto) {
-		return new Usuario(userDto.getEmail(), userDto.getNome(), encoder.encode(userDto.getSenha()));
+		return new Usuario(
+				userDto.getEmail(), 
+				userDto.getNome(), 
+				encoder.encode(userDto.getSenha()), 
+				userDto.getTipo());
 	}
 }
