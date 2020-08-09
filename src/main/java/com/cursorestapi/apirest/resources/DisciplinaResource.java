@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
@@ -36,6 +37,14 @@ public class DisciplinaResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<DisciplinaDTO>> findAll() {
 		List<Disciplina> list = disciplinaService.findAll();
+		List<DisciplinaDTO> listDto = list.stream().map(
+				obj -> new DisciplinaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ResponseEntity<List<DisciplinaDTO>> findAllByNomeContains(@RequestParam(value = "nome") String nome) {
+		List<Disciplina> list = disciplinaService.findAllByNomeContains(nome);
 		List<DisciplinaDTO> listDto = list.stream().map(
 				obj -> new DisciplinaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);

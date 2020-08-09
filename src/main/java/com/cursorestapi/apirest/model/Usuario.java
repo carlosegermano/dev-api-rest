@@ -75,7 +75,6 @@ public class Usuario implements Serializable {
 	}
 
 	public boolean isValid() {
-		System.out.println(!email.isEmpty());
 		return !email.isEmpty() && !nome.isEmpty() && !senha.isEmpty();
 	}
 	

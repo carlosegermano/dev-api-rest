@@ -13,4 +13,6 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
 	List<Disciplina> findByOrderByNotaDesc();
 	
 	List<Disciplina> findByOrderByLikesDesc();
+	
+	List<Disciplina> findAllByNomeContains(String nome);
 }

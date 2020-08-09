@@ -21,7 +21,7 @@ public class DisciplinaService {
 	public void insert(Disciplina obj) {
 		disciplinaRepository.save(obj);
 	}
-
+	
 	public List<Disciplina> findAll() {
 		return disciplinaRepository.findAll();
 	}
@@ -73,6 +73,11 @@ public class DisciplinaService {
 	
 	public List<Disciplina> sortByLikes(List<Disciplina> list) {
 		return disciplinaRepository.findByOrderByLikesDesc();
+	}
+
+	public List<Disciplina> findAllByNomeContains(String nome) {
+		List<Disciplina> list = disciplinaRepository.findAllByNomeContains(nome);
+		return list;
 	}
 	
 	/*
