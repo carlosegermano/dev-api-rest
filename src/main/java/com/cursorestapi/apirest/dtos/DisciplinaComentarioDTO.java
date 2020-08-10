@@ -1,12 +1,14 @@
 package com.cursorestapi.apirest.dtos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
 
-public class DisciplinaComentarioDTO {
+public class DisciplinaComentarioDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private long id;
 	private String nome;

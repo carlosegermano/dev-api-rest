@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaDTO;
-import com.cursorestapi.apirest.dtos.DisciplinaLikesDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaNotaDTO;
 import com.cursorestapi.apirest.dtos.PerfilDisciplina;
 import com.cursorestapi.apirest.model.Comentario;
@@ -110,23 +109,13 @@ public class DisciplinaResource {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "/likes/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> increaseLikes(@PathVariable Long id) {
-		Optional<Disciplina> newObj = disciplinaService.findById(id);
-		if (newObj.isPresent()) {
-			DisciplinaLikesDTO obj = disciplinaService.increaseLikes(newObj.get());
-			return ResponseEntity.ok().body(obj);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		disciplinaService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/{id}/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{disciplina_id}/{comentario_id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteComment(@PathVariable Long disciplina_id, @PathVariable Long comentario_id) {
 		disciplinaService.deleteComment(disciplina_id, comentario_id);
 		return ResponseEntity.noContent().build();

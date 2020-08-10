@@ -35,7 +35,10 @@ public class Comentario implements Serializable {
 	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(
+			pattern = "dd/MM/yyyy HH:mm", 
+			locale = "pt-BR", 
+			timezone = "Brazil/East")
 	private Date instante;
 	
 	private boolean ativo = true;

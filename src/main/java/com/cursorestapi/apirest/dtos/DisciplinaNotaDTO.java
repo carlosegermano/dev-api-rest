@@ -1,8 +1,11 @@
 package com.cursorestapi.apirest.dtos;
 
+import java.io.Serializable;
+
 import com.cursorestapi.apirest.model.Disciplina;
 
-public class DisciplinaNotaDTO {
+public class DisciplinaNotaDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private long id;
 	private String nome;

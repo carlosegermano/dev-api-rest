@@ -25,6 +25,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private String nome;
 	private double nota = -1;
 	private int likes;
+	private int numComentarios;
 	
 	@ElementCollection
 	@CollectionTable(name = "NOTA")
@@ -103,7 +104,15 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
+	
+	public int getNumComentarios() {
+		return numComentarios;
+	}
 
+	public void setNumComentarios(int numComentarios) {
+		this.numComentarios = numComentarios;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

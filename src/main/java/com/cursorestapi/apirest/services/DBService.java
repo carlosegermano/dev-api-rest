@@ -3,6 +3,7 @@ package com.cursorestapi.apirest.services;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,26 +26,34 @@ public class DBService {
 
 	@Autowired
 	private DisciplinaRepository disciplinaRepository;
-
+	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
 	public void instantiateTestDatabase() throws ParseException {
 		
 		Usuario user1 = new Usuario("carlosegermano@gmail.com", "Carlos", "Germano", encoder.encode("123"));
+		Usuario user2 = new Usuario("ana@gmail.com", "Ana", "Dantas", encoder.encode("123"));
+
 		user1.addPerfil(Perfil.ADMIN);
-		usuarioRepository.save(user1);
+		usuarioRepository.saveAll(Arrays.asList(user1, user2));
+		
+		JsonArray disciplinas = null;
+		Gson gson = new Gson();
 		
 		try {
 
 			FileReader file = new FileReader("disciplinas.json");
 			Object obj = JsonParser.parseReader(file);
-			JsonArray disciplinas = (JsonArray) obj;
-			Gson gson = new Gson();
-			disciplinas.forEach(disc -> disciplinaRepository.save(gson.fromJson(disc, Disciplina.class)));
+			disciplinas = (JsonArray) obj;
+			disciplinas.forEach(
+					disc -> disciplinaRepository.save(
+							gson.fromJson(
+									disc, Disciplina.class)));
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		
 	}
 }
