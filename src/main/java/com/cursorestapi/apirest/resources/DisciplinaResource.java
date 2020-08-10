@@ -18,6 +18,7 @@ import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaLikesDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaNotaDTO;
+import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
 import com.cursorestapi.apirest.services.DisciplinaService;
 
@@ -32,6 +33,16 @@ public class DisciplinaResource {
 	public ResponseEntity<Disciplina> insert(@RequestBody Disciplina obj) {
 		disciplinaService.insert(obj);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value = "/comentarios/{id}", method = RequestMethod.POST)
+	public ResponseEntity<?> comment(@PathVariable Long id, @RequestBody Comentario comentario) {
+		Optional<Disciplina> newObj = disciplinaService.findById(id);
+		if (newObj.isPresent()) {
+			DisciplinaComentarioDTO objUpdated = disciplinaService.comment(newObj.get(), comentario);
+			return ResponseEntity.ok().body(objUpdated);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -76,7 +87,7 @@ public class DisciplinaResource {
 	public ResponseEntity<?> updateName(@PathVariable Long id, @RequestBody Disciplina obj) {
 		Optional<Disciplina> newObj = disciplinaService.findById(id);
 		if (newObj.isPresent()) {
-			Disciplina objUpdated = disciplinaService.updateNome(newObj.get(), obj);
+			Disciplina objUpdated = disciplinaService.updateName(newObj.get(), obj);
 			return ResponseEntity.ok().body(objUpdated);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,16 +109,6 @@ public class DisciplinaResource {
 		if (newObj.isPresent()) {
 			DisciplinaLikesDTO obj = disciplinaService.increaseLikes(newObj.get());
 			return ResponseEntity.ok().body(obj);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-	
-	@RequestMapping(value = "/comentarios/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> comment(@PathVariable Long id, @RequestBody Disciplina obj) {
-		Optional<Disciplina> newObj = disciplinaService.findById(id);
-		if (newObj.isPresent()) {
-			DisciplinaComentarioDTO objUpdated = disciplinaService.comment(newObj.get(), obj);
-			return ResponseEntity.ok().body(objUpdated);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}

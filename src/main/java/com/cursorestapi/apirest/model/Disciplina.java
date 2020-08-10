@@ -1,11 +1,15 @@
 package com.cursorestapi.apirest.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Disciplina implements Comparable<Disciplina>, Serializable {
@@ -16,18 +20,19 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private long id;
 	private String nome;
 	private double nota;
-	private String comentarios = "";
 	private int likes = -1;
 
+	@OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL)
+	private List<Comentario> comentarios = new ArrayList<>();
+	
 	public Disciplina() {
 	}
 
-	public Disciplina(Long id, String nome, double nota, String comentarios, int likes) {
+	public Disciplina(Long id, String nome, double nota, int likes) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.nota = nota;
-		this.comentarios = comentarios;
 		this.likes = likes;
 	}
 
@@ -55,16 +60,12 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		this.nota = nota;
 	}
 
-	public String getComentarios() {
+	public List<Comentario> getComentarios() {
 		return comentarios;
 	}
 
-	public void addComentarios(String comentarios) {
-		if (this.comentarios.equals("")) {
-			this.comentarios = comentarios;
-		} else {
-			this.comentarios += "\n" + comentarios;
-		}
+	public void addComentario(Comentario comentario) {
+		this.comentarios.add(comentario);
 	}
 
 	public int getLikes() {

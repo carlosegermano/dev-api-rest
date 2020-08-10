@@ -1,12 +1,16 @@
 package com.cursorestapi.apirest.dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
 
 public class DisciplinaComentarioDTO {
 
 	private long id;
 	private String nome;
-	private String comentarios;
+	private List<Comentario> comentarios = new ArrayList<>();
 	
 	public DisciplinaComentarioDTO() {
 	}
@@ -34,12 +38,12 @@ public class DisciplinaComentarioDTO {
 		this.nome = nome;
 	}
 
-	public String getComentarios() {
+	public List<Comentario> getComentarios() {
 		return comentarios;
 	}
 
-	public void setComentarios(String comentarios) {
-		this.comentarios = comentarios;
+	public void addComentarios(Comentario comentario) {
+		this.comentarios.add(comentario);
 	}
 
 }

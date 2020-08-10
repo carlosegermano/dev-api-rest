@@ -1,23 +1,36 @@
 package com.cursorestapi.apirest.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.cursorestapi.apirest.daos.ComentarioRepository;
 import com.cursorestapi.apirest.daos.DisciplinaRepository;
+import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaLikesDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaNotaDTO;
+import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
+import com.cursorestapi.apirest.model.Usuario;
+import com.cursorestapi.apirest.security.UserSpringSecurity;
 
 @Service
 public class DisciplinaService {
 
 	@Autowired
 	private DisciplinaRepository disciplinaRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private ComentarioRepository comentarioRepository;
+	
 	public void insert(Disciplina obj) {
 		disciplinaRepository.save(obj);
 	}
@@ -35,7 +48,7 @@ public class DisciplinaService {
 		disciplinaRepository.deleteById(id);
 	}
 
-	public Disciplina updateNome(Disciplina newObj, Disciplina obj) {
+	public Disciplina updateName(Disciplina newObj, Disciplina obj) {
 		newObj.setNome(obj.getNome());
 		return disciplinaRepository.save(newObj);
 	}
@@ -61,9 +74,25 @@ public class DisciplinaService {
 		return new DisciplinaLikesDTO(obj);
 	}
 	
-	public DisciplinaComentarioDTO comment(Disciplina obj, Disciplina objJson) {
-		obj.addComentarios(objJson.getComentarios());
+	public DisciplinaComentarioDTO comment(Disciplina obj, Comentario comentario) {
+		
+		UserSpringSecurity uss = (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Optional<Usuario> user = usuarioRepository.findByEmail(uss.getUsername());
+		
+		comentario.setInstante(new Date());
+		comentario.setDisciplina(obj);
+		comentario.setUsuario(user.get());
+		
+		comentarioRepository.save(comentario);
+		
+		user.get().addComentario(comentario);
+		
+		usuarioRepository.save(user.get());
+		
+		obj.addComentario(comentario);
+		
 		disciplinaRepository.save(obj);
+
 		return new DisciplinaComentarioDTO(obj);
 	}
 	

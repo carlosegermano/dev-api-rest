@@ -1,15 +1,19 @@
 package com.cursorestapi.apirest.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.cursorestapi.apirest.model.enums.Perfil;
 
@@ -26,6 +30,9 @@ public class Usuario implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Comentario> comentarios = new ArrayList<>();
 	
 	public Usuario() {
 	}
@@ -80,6 +87,10 @@ public class Usuario implements Serializable {
 	
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
+	}
+	
+	public void addComentario(Comentario comentario) {
+		this.comentarios.add(comentario);
 	}
 
 	@Override
