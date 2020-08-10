@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,10 +23,11 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(unique = true)
 	private String email;
-	private String nome;
+	private String primeiro_nome;
+	private String ultimo_nome;
 	private String senha;
-	private Integer tipo;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
@@ -37,11 +39,11 @@ public class Usuario implements Serializable {
 	public Usuario() {
 	}
 	
-	public Usuario(String email, String nome, String senha, Integer tipo) {
+	public Usuario(String email, String primeiro_nome, String ultimo_nome, String senha) {
 		this.email = email;
-		this.nome = nome;
+		this.primeiro_nome = primeiro_nome;
+		this.ultimo_nome = ultimo_nome;
 		this.senha = senha;
-		this.tipo = tipo;
 		addPerfil(Perfil.COMMON_USER);
 	}
 	
@@ -53,12 +55,20 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getPrimeiro_nome() {
+		return primeiro_nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setPrimeiro_nome(String primeiro_nome) {
+		this.primeiro_nome = primeiro_nome;
+	}
+
+	public String getUltimo_nome() {
+		return ultimo_nome;
+	}
+
+	public void setUltimo_nome(String ultimo_nome) {
+		this.ultimo_nome = ultimo_nome;
 	}
 
 	public String getSenha() {
@@ -69,20 +79,12 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	public Integer getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
-	}
-
 	public Set<Perfil> getPerfis() {
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
 
 	public boolean isValid() {
-		return !email.isEmpty() && !nome.isEmpty() && !senha.isEmpty();
+		return !email.isEmpty() && !primeiro_nome.isEmpty() && !ultimo_nome.isEmpty() && !senha.isEmpty();
 	}
 	
 	public void addPerfil(Perfil perfil) {

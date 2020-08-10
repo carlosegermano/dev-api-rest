@@ -12,6 +12,7 @@ import com.cursorestapi.apirest.daos.DisciplinaRepository;
 import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.model.Disciplina;
 import com.cursorestapi.apirest.model.Usuario;
+import com.cursorestapi.apirest.model.enums.Perfil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -30,8 +31,8 @@ public class DBService {
 
 	public void instantiateTestDatabase() throws ParseException {
 		
-		Usuario user1 = new Usuario("carlosegermano@gmail.com", "Carlos Eduardo", encoder.encode("123"), 1);
-		
+		Usuario user1 = new Usuario("carlosegermano@gmail.com", "Carlos", "Germano", encoder.encode("123"));
+		user1.addPerfil(Perfil.ADMIN);
 		usuarioRepository.save(user1);
 		
 		try {

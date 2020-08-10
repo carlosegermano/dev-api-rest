@@ -11,17 +11,17 @@ public class UsuarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String email;
-	private String nome;
+	private String primeiro_nome;
+	private String ultimo_nome;
 	private String senha;
-	private Integer tipo;
 	
 	public UsuarioDTO() {
 	}
 	
 	public UsuarioDTO(Usuario user) {
 		this.email = user.getEmail();
-		this.nome = user.getNome();
+		this.primeiro_nome = user.getPrimeiro_nome();
+		this.ultimo_nome = user.getUltimo_nome();
 		this.senha = user.getSenha();
-		this.tipo = user.getTipo();
 	}
 }

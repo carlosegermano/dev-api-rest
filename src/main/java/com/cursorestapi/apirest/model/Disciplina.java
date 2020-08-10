@@ -24,7 +24,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private long id;
 	private String nome;
 	private double nota = -1;
-	private int likes = -1;
+	private int likes;
 	
 	@ElementCollection
 	@CollectionTable(name = "NOTA")

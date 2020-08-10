@@ -14,6 +14,7 @@ import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaLikesDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaNotaDTO;
+import com.cursorestapi.apirest.dtos.PerfilDisciplina;
 import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
 import com.cursorestapi.apirest.model.Usuario;
@@ -41,6 +42,11 @@ public class DisciplinaService {
 
 	public Optional<Disciplina> findById(Long id) {
 		return disciplinaRepository.findById(id);
+	}
+	
+	public PerfilDisciplina obterPerfilDisciplina(Long id) {
+		Optional<Disciplina> obj = findById(id);
+		return new PerfilDisciplina(obj.get());
 	}
 
 	public void delete(Long id) {

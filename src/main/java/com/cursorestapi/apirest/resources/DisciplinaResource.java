@@ -18,6 +18,7 @@ import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaLikesDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaNotaDTO;
+import com.cursorestapi.apirest.dtos.PerfilDisciplina;
 import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
 import com.cursorestapi.apirest.services.DisciplinaService;
@@ -66,6 +67,12 @@ public class DisciplinaResource {
 		Optional<Disciplina> obj = disciplinaService.findById(id);
 		return (obj.isPresent()) ? ResponseEntity.ok().body(obj) :
 			new ResponseEntity<Disciplina>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "/perfil/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> obterPerfil(@PathVariable Long id) {
+		PerfilDisciplina perfil = disciplinaService.obterPerfilDisciplina(id);
+		return ResponseEntity.ok().body(perfil);
 	}
 	
 	@RequestMapping(value = "/ranking/notas", method = RequestMethod.GET)
