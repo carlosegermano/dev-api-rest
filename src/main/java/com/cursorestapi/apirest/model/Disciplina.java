@@ -2,9 +2,13 @@ package com.cursorestapi.apirest.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +23,12 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nome;
-	private double nota;
+	private double nota = -1;
 	private int likes = -1;
+	
+	@ElementCollection
+	@CollectionTable(name = "NOTA")
+	private Set<Double> notas = new HashSet<>();
 
 	@OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL)
 	private List<Comentario> comentarios = new ArrayList<>();
@@ -82,6 +90,18 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
+	}
+
+	public Set<Double> getNotas() {
+		return notas;
+	}
+
+	public void addNotas(double nota) {
+		this.notas.add(nota);
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
 	}
 
 	@Override

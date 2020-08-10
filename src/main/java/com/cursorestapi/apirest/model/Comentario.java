@@ -38,4 +38,6 @@ public class Comentario implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instante;
 	
+	private boolean ativo = true;
+	
 }

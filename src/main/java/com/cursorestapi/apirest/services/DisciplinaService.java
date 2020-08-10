@@ -47,6 +47,17 @@ public class DisciplinaService {
 		findById(id);
 		disciplinaRepository.deleteById(id);
 	}
+	
+	public void deleteComment(Long disciplina_id, Long comentario_id) {
+		Optional<Disciplina> disc = findById(disciplina_id);
+		List<Comentario> comentarios = disc.get().getComentarios();
+		for (Comentario comentario : comentarios) {
+			if (comentario.getId() == comentario_id) {
+				comentario.setAtivo(false);
+				break;
+			}	
+		}
+	}
 
 	public Disciplina updateName(Disciplina newObj, Disciplina obj) {
 		newObj.setNome(obj.getNome());
@@ -54,13 +65,16 @@ public class DisciplinaService {
 	}
 
 	public DisciplinaNotaDTO updateNota(Disciplina newObj, Disciplina obj) {
+		
 		if (newObj.getNota() == -1) {
 			newObj.setNota(obj.getNota());
+			newObj.addNotas(obj.getNota());
 		} else {
 			double nota1 = newObj.getNota();
 			double nota2 = obj.getNota();
 			double media = (nota1 + nota2) / 2;
 			newObj.setNota(media);
+			newObj.addNotas(obj.getNota());
 		}
 		
 		disciplinaRepository.save(newObj);

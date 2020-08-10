@@ -118,6 +118,11 @@ public class DisciplinaResource {
 		disciplinaService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
+
+	@RequestMapping(value = "/{id}/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteComment(@PathVariable Long disciplina_id, @PathVariable Long comentario_id) {
+		disciplinaService.deleteComment(disciplina_id, comentario_id);
+		return ResponseEntity.noContent().build();
+	}
+
 }
