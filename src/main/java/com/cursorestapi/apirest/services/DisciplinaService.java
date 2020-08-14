@@ -8,17 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.cursorestapi.apirest.daos.ComentarioRepository;
-import com.cursorestapi.apirest.daos.DisciplinaRepository;
-import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.dtos.DisciplinaComentarioDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaLikesDTO;
 import com.cursorestapi.apirest.dtos.DisciplinaNotaDTO;
 import com.cursorestapi.apirest.dtos.PerfilDisciplina;
 import com.cursorestapi.apirest.model.Comentario;
 import com.cursorestapi.apirest.model.Disciplina;
+import com.cursorestapi.apirest.model.ItemLike;
 import com.cursorestapi.apirest.model.Usuario;
 import com.cursorestapi.apirest.model.enums.Perfil;
+import com.cursorestapi.apirest.repository.ComentarioRepository;
+import com.cursorestapi.apirest.repository.DisciplinaRepository;
+import com.cursorestapi.apirest.repository.ItemLikeRepository;
+import com.cursorestapi.apirest.repository.UsuarioRepository;
 import com.cursorestapi.apirest.security.UserSpringSecurity;
 import com.cursorestapi.apirest.services.exceptions.AuthorizationException;
 import com.cursorestapi.apirest.services.exceptions.CommentActivityException;
@@ -36,6 +38,9 @@ public class DisciplinaService {
 	@Autowired
 	private ComentarioRepository comentarioRepository;
 
+	@Autowired
+	private ItemLikeRepository itemLikeRepository;
+
 	public void insert(Disciplina obj) {
 		disciplinaRepository.save(obj);
 	}
@@ -48,7 +53,7 @@ public class DisciplinaService {
 		Optional<Disciplina> obj = findById(id);
 		return new PerfilDisciplina(obj.get());
 	}
-	
+
 	public Optional<Disciplina> findById(Long id) {
 		return disciplinaRepository.findById(id);
 	}
@@ -76,9 +81,41 @@ public class DisciplinaService {
 		return objDto;
 	}
 
-	public DisciplinaLikesDTO increaseLikes(Disciplina obj) {
-		obj.increaseLikes();
-		disciplinaRepository.save(obj);
+	public DisciplinaLikesDTO updateLikes(Disciplina obj) {
+
+		Optional<Usuario> user = getLoggedUser();
+		ItemLike like = null;
+		boolean giveLike;
+		int index = -1;
+
+		for (int i = 0; i < obj.getItemLikes().size(); i++) {
+			if (obj.getItemLikes().get(i).getUsuario().getEmail().equals(user.get().getEmail())) {
+				like = obj.getItemLikes().get(i);
+				index = i;
+				break;
+			}
+		}
+
+		if (like != null) {
+			giveLike = obj.getItemLikes().get(index).isGaveLike();
+			
+			if (giveLike) {	
+				obj.decreaseLikes();
+			} else {
+				obj.increaseLikes();
+			}
+			
+			obj.getItemLikes().get(index).setGaveLike(!giveLike);
+			disciplinaRepository.save(obj);
+			
+			
+		} else {
+			ItemLike newLike = new ItemLike(null, user.get(), obj, true);
+			obj.getItemLikes().add(newLike);
+			obj.increaseLikes();
+			itemLikeRepository.save(newLike);
+		}
+
 		return new DisciplinaLikesDTO(obj);
 	}
 
@@ -110,7 +147,7 @@ public class DisciplinaService {
 	}
 
 	public List<Disciplina> sortByLikes(List<Disciplina> list) {
-		return disciplinaRepository.findByOrderByLikesDesc();
+		return disciplinaRepository.findByOrderByNumLikesDesc();
 	}
 
 	public List<Disciplina> findAllByNomeContains(String nome) {
@@ -133,10 +170,10 @@ public class DisciplinaService {
 
 			obj.get().setNumComentarios(obj.get().getNumComentarios() - 1);
 			comment.setAtivo(false);
-			
+
 			Optional<Comentario> com = comentarioRepository.findById(comentario_id);
 			com.get().setAtivo(false);
-			
+
 			comentarioRepository.save(comment);
 		}
 	}
@@ -165,9 +202,7 @@ public class DisciplinaService {
 	}
 
 	private Optional<Usuario> getLoggedUser() {
-		UserSpringSecurity uss = (UserSpringSecurity) SecurityContextHolder
-				.getContext()
-				.getAuthentication()
+		UserSpringSecurity uss = (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		return usuarioRepository.findByEmail(uss.getUsername());
 	}

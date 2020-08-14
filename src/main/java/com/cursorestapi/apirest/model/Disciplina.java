@@ -2,9 +2,7 @@ package com.cursorestapi.apirest.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -24,12 +22,15 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private long id;
 	private String nome;
 	private double nota = -1;
-	private int likes;
+	private int numLikes;
 	private int numComentarios;
+	
+	@OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL)
+	private List<ItemLike> allLikes = new ArrayList<>();
 	
 	@ElementCollection
 	@CollectionTable(name = "NOTA")
-	private Set<Double> notas = new HashSet<>();
+	private List<Double> notas = new ArrayList<>();
 
 	@OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL)
 	private List<Comentario> comentarios = new ArrayList<>();
@@ -42,7 +43,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.nota = nota;
-		this.likes = likes;
+		this.numLikes = likes;
 	}
 
 	public long getId() {
@@ -77,12 +78,16 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		this.comentarios.add(comentario);
 	}
 
-	public int getLikes() {
-		return likes;
+	public int getNumLikes() {
+		return numLikes;
 	}
 
 	public void increaseLikes() {
-		this.likes = this.likes + 1;
+		this.numLikes = this.numLikes + 1;
+	}
+	
+	public void decreaseLikes() {
+		this.numLikes = this.numLikes - 1;
 	}
 
 	@Override
@@ -93,7 +98,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		return result;
 	}
 
-	public Set<Double> getNotas() {
+	public List<Double> getNotas() {
 		return notas;
 	}
 
@@ -102,7 +107,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	}
 
 	public void setLikes(int likes) {
-		this.likes = likes;
+		this.numLikes = likes;
 	}
 	
 	public int getNumComentarios() {
@@ -111,6 +116,10 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 
 	public void setNumComentarios(int numComentarios) {
 		this.numComentarios = numComentarios;
+	}
+	
+	public List<ItemLike> getItemLikes() {
+		return allLikes;
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ public class DisciplinaLikesDTO implements Serializable {
 		super();
 		this.id = obj.getId();
 		this.nome = obj.getNome();
-		this.likes = obj.getLikes();
+		this.likes = obj.getNumLikes();
 	}	
 
 	public long getId() {

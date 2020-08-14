@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.dtos.UsuarioDTO;
 import com.cursorestapi.apirest.dtos.UsuarioLoginDTO;
 import com.cursorestapi.apirest.model.Usuario;
+import com.cursorestapi.apirest.repository.UsuarioRepository;
 import com.cursorestapi.apirest.services.exceptions.DuplicatedUserException;
 import com.cursorestapi.apirest.services.exceptions.InvalidUserException;
 

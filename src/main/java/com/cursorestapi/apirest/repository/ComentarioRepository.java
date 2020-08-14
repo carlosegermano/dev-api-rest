@@ -1,4 +1,4 @@
-package com.cursorestapi.apirest.daos;
+package com.cursorestapi.apirest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

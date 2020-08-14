@@ -40,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_GET = {
-			"/v1/api/disciplinas/**"
+			"/v1/api/disciplinas/**",
+			"/swagger-ui/**"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {

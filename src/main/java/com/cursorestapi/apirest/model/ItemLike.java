@@ -1,7 +1,6 @@
 package com.cursorestapi.apirest.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,20 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Comentario implements Serializable {
+public class ItemLike implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private String descricao;
+	private Long id;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -35,12 +32,17 @@ public class Comentario implements Serializable {
 	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
 	
-	@JsonFormat(
-			pattern = "dd/MM/yyyy HH:mm", 
-			locale = "pt-BR", 
-			timezone = "Brazil/East")
-	private Date instante;
+	private boolean gaveLike;
 	
-	private boolean ativo = true;
+	public ItemLike() {
+	}
+	
+	public ItemLike(Long id, Usuario usuario, Disciplina disciplina, boolean gaveLike) {
+		super();
+		this.id = id;
+		this.usuario = usuario;
+		this.disciplina = disciplina;
+		this.gaveLike = gaveLike;
+	}
 	
 }

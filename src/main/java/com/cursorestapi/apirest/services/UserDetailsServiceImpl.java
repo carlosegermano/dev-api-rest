@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.model.Usuario;
+import com.cursorestapi.apirest.repository.UsuarioRepository;
 import com.cursorestapi.apirest.security.UserSpringSecurity;
 
 @Service

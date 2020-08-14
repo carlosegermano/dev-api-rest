@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cursorestapi.apirest.daos.DisciplinaRepository;
-import com.cursorestapi.apirest.daos.UsuarioRepository;
 import com.cursorestapi.apirest.model.Disciplina;
 import com.cursorestapi.apirest.model.Usuario;
 import com.cursorestapi.apirest.model.enums.Perfil;
+import com.cursorestapi.apirest.repository.DisciplinaRepository;
+import com.cursorestapi.apirest.repository.UsuarioRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;

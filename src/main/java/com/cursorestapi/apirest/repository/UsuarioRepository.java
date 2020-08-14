@@ -1,4 +1,4 @@
-package com.cursorestapi.apirest.daos;
+package com.cursorestapi.apirest.repository;
 
 import java.util.Optional;
 

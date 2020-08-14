@@ -17,14 +17,15 @@ public class PerfilDisciplina {
 	private String nome_disciplina;
 	private int likes;
 	private int qtd_comentarios;
-	private Set<Double> notas = new HashSet<>();
+	private List<Double> notas = new ArrayList<>();
 	private List<Comentario> comentarios = new ArrayList<>();
+	private Set<String> usuariosLike = new HashSet<>();
 	private double nota;
 	
 	public PerfilDisciplina(Disciplina obj) {
 		this.id_disciplina = obj.getId();
 		this.nome_disciplina = obj.getNome();
-		this.likes = obj.getLikes();
+		this.likes = obj.getNumLikes();
 		this.qtd_comentarios = obj.getNumComentarios();
 		this.notas = obj.getNotas();
 		this.comentarios = updateComentarios(obj.getComentarios());
