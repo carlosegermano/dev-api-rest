@@ -40,7 +40,8 @@ public class DisciplinaResource {
 	@ApiOperation(value = "Inserir disciplina")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Criado", response = Disciplina.class) })
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Disciplina> insert(@RequestBody Disciplina obj) {
+	public ResponseEntity<DisciplinaDTO> insert(@RequestBody DisciplinaDTO objDto) {
+		Disciplina obj = fromDTO(objDto);
 		disciplinaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -90,8 +91,10 @@ public class DisciplinaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@ApiOperation(value = "Buscar disciplina por ID")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Disciplina.class) })
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	private ResponseEntity<?> find(@PathVariable Long id) {
+	public ResponseEntity<?> find(@PathVariable Long id) {
 		Optional<Disciplina> obj = disciplinaService.findById(id);
 		return (obj.isPresent()) ? ResponseEntity.ok().body(obj) :
 			new ResponseEntity<Disciplina>(HttpStatus.NOT_FOUND);
@@ -161,11 +164,16 @@ public class DisciplinaResource {
 	}
 
 	@ApiOperation(value = "Inativar comentário")
-	@ApiResponses(value = { @ApiResponse(code = 204, message = "Nenhum conteúdo") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 204, message = "Nenhum conteúdo"),
+			@ApiResponse(code = 404, message = "Código inexistente")})
 	@RequestMapping(value = "/{disciplina_id}/{comentario_id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteComment(@PathVariable Long disciplina_id, @PathVariable Long comentario_id) {
 		disciplinaService.deleteComment(disciplina_id, comentario_id);
 		return ResponseEntity.noContent().build();
 	}
 
+	public Disciplina fromDTO(DisciplinaDTO objDto) {
+		return new Disciplina(null, objDto.getNome(), 0, 0);
+	}
 }

@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,6 +26,7 @@ import com.cursorestapi.apirest.services.JWTService;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -37,11 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final String[] PUBLIC_MATCHERS = {
 		"/h2/**"
-	};
+    };
 	
 	private static final String[] PUBLIC_MATCHERS_GET = {
-			"/v1/api/disciplinas/**",
-			"/swagger-ui/**"
+			"/v1/api/disciplinas/**"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {
@@ -67,6 +69,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+	 web.ignoring().antMatchers(
+			 "/v2/api-docs", 
+			 "/configuration/ui", 
+			 "/swagger-resources/**", 
+			 "/configuration/**",
+			 "/swagger-ui.html", 
+			 "/webjars/**"
+			 );
+	}
+	
+	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPassowrdEncoder());
 	}
@@ -84,4 +98,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public BCryptPasswordEncoder bCryptPassowrdEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 }
